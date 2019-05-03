@@ -15,7 +15,7 @@ def getParam():
         f.write(config_file)
 
     os.system("sudo /etc/init.d/apache2 reload")
-    return True
+    return "Done"
 
 
 @app.route("/")
