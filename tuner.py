@@ -17,4 +17,4 @@ def getParam():
     os.system("sudo /etc/init.d/apache2 reload")
     return True
 
-app.run(port=5001)
+app.run(host="0.0.0.0", port=5001)
