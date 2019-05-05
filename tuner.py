@@ -41,6 +41,7 @@ def mpmModel(new_model):
         os.system("ln -s /etc/apache2/mods-available/" + model + ".conf /etc/apache2/mods-enabled/" + model + ".conf")
         os.system("ln -s /etc/apache2/mods-available/" + model + ".load /etc/apache2/mods-enabled/" + model + ".load")
 
+        return "Done"
     else:
         return "Already using the same model"
 
