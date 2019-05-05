@@ -38,8 +38,8 @@ def mpmModel(new_model):
 
         # update the symbolic links in mods-enabled
         os.system("rm /etc/apache2/mods-enabled/mpm_*.*")
-        os.system("ln -s /etc/apache2/mods-available/" + model + ".conf /etc/apache2/modes-enabled/" + model + ".conf")
-        os.system("ln -s /etc/apache2/mods-available/" + model + ".load /etc/apache2/modes-enabled/" + model + ".load")
+        os.system("ln -s /etc/apache2/mods-available/" + model + ".conf /etc/apache2/mods-enabled/" + model + ".conf")
+        os.system("ln -s /etc/apache2/mods-available/" + model + ".load /etc/apache2/mods-enabled/" + model + ".load")
 
     else:
         return "Already using the same model"
