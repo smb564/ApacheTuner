@@ -55,6 +55,11 @@ def setDefault():
     return "Done"
 
 
+@app.route("/reload")
+def reload():
+    os.system("sudo /etc/init.d/apache2 reload")
+    return "Done"
+
 @app.route("/")
 def hello():
     return "Hello, Server is runing.."
