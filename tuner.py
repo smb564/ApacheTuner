@@ -43,6 +43,7 @@ def mpmModel(new_model):
 
         return "Done"
     else:
+        setDefault()
         return "Already using the same model"
 
 
