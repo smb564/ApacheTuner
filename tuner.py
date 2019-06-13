@@ -12,10 +12,21 @@ def getParam():
     with open(model + ".conf") as f:
         config_file = f.read()
 
-    config_file = config_file.replace("{{MaxRequestWorkers}}", request.args.get("MaxRequestWorkers"))
+    # check if MaxRequestWorkers parameter is passed
+    if request.args.has_key("MaxRequestWorkers"):
+        config_file = config_file.replace("{{MaxRequestWorkers}}", request.args.get("MaxRequestWorkers"))
 
-    with open("/etc/apache2/mods-available/" + model + ".conf", "w") as f:
-        f.write(config_file)
+        with open("/etc/apache2/mods-available/" + model + ".conf", "w") as f:
+                f.write(config_file)
+    
+    # check if keepAliveTimeout param is passed
+    if request.args.has_key("KeepAliveTimeout"):
+        with open("apache2.conf") as f:
+            apache2conf = f.read()
+        apache2conf = apache2conf.replace("{{KeepAliveTimeout}}", request.args.get("KeepAliveTimeout"))
+
+        with open("/etc/apache2/apache2.conf", "w") as f:
+            f.write(apache2conf)
 
     os.system("sudo /etc/init.d/apache2 reload")
     return "Done"
@@ -53,6 +64,7 @@ def setDefault():
     This does not reset the mpm module type to the default type, but change current module's param to default
     '''
     os.system("cp " + model + ".default.conf /etc/apache2/mods-available/" + model + ".conf")
+    os.system("cp apache2.default.conf /etc/apache2/apache2.conf")
     return "Done"
 
 
@@ -67,8 +79,8 @@ def hello():
 
 
 # TODO: We should read the current modul from mods-available
-# let's always put mpm_event as the initial one
+# let's always put mpm_prefork as the initial one (rather than reading the existing one)
 model = ""
-mpmModel("mpm_event")
+mpmModel("mpm_prefork")
 
 app.run(host="0.0.0.0", port=5001)
