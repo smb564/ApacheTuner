@@ -16,13 +16,13 @@ def getParam():
     min_spare_servers = 5
     max_spare_servers = 10
 
-    if request.args.has_key("MaxRequestWorkers"):
+    if "MaxRequestWorkers" in request.args:
         max_request_workers = request.args.get("MaxRequestWorkers")
 
-    if request.args.has_key("MinSpareServers"):
+    if "MinSpareServers" in request.args:
         min_spare_servers = request.args.get("MinSpareServers")
     
-    if request.args.has_key("MaxSpareServers"):
+    if "MaxSpareServers" in request.args:
         max_spare_servers = request.args.get("MaxSpareServers")
 
     config_file = config_file.replace("{{MaxRequestWorkers}}", str(max_request_workers))
@@ -33,7 +33,7 @@ def getParam():
             f.write(config_file)
     
     # check if keepAliveTimeout param is passed
-    if request.args.has_key("KeepAliveTimeout"):
+    if "KeepAliveTimeout" in request.args:
         with open("apache2.conf") as f:
             apache2conf = f.read()
         apache2conf = apache2conf.replace("{{KeepAliveTimeout}}", request.args.get("KeepAliveTimeout"))
