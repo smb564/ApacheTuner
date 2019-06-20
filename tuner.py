@@ -12,12 +12,25 @@ def getParam():
     with open(model + ".conf") as f:
         config_file = f.read()
 
-    # check if MaxRequestWorkers parameter is passed
-    if request.args.has_key("MaxRequestWorkers"):
-        config_file = config_file.replace("{{MaxRequestWorkers}}", request.args.get("MaxRequestWorkers"))
+    max_request_workers = 256
+    min_spare_servers = 5
+    max_spare_servers = 10
 
-        with open("/etc/apache2/mods-available/" + model + ".conf", "w") as f:
-                f.write(config_file)
+    if request.args.has_key("MaxRequestWorkers"):
+        max_request_workers = request.args.get("MaxRequestWorkers")
+
+    if request.args.has_key("MinSpareServers"):
+        min_spare_servers = request.args.get("MinSpareServers")
+    
+    if request.args.has_key("MaxSpareServers"):
+        max_spare_servers = request.args.get("MaxSpareServers")
+
+    config_file = config_file.replace("{{MaxRequestWorkers}}", str(max_request_workers))
+    config_file = config_file.replace("{{MinSpareServers}}", str(min_spare_servers))
+    config_file = config_file.replace("{{MaxSpareServers}}", str(max_spare_servers))
+
+    with open("/etc/apache2/mods-available/" + model + ".conf", "w") as f:
+            f.write(config_file)
     
     # check if keepAliveTimeout param is passed
     if request.args.has_key("KeepAliveTimeout"):
